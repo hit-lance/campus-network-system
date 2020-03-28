@@ -132,3 +132,5 @@ select name from instructor_arrangement natural join instructor where cno='CS310
 select cno, group_concat(name) as instructor,enroll,capacity from instructor_arrangement natural join instructor natural join enrollment group by cno;
 insert into department (name,building,telephone) values ('AS','main building','86403166');
 delete from department where name='AS';
+select * from student_info;
+select * from course where credit = (select max(credit) from course);

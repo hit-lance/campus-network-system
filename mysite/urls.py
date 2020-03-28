@@ -24,6 +24,8 @@ urlpatterns = [
     url(r'^addSuccess/$', views.addSuccess),
     url(r'^deleteDepartment/$', views.deleteDepartment),
     url(r'^deleteSuccess/$', views.deleteSuccess),
+    url(r'^studentInfo/$', views.studentInfo),
     url(r'^courseEnrollment/$', views.courseEnrollment),
+    url(r'^maxCreditCourse/$', views.maxCreditCourse),
     url(r'^admin/', admin.site.urls),
 ]

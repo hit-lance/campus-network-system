@@ -41,6 +41,12 @@ def deleteSuccess(request):
     cursor.execute('''delete from department where name=%s;''',[name])
     return HttpResponse('删除成功！')
 
+def studentInfo(request):
+    cursor = connection.cursor()
+    cursor.execute('''select * from student_info;''')
+    studentInfo=namedtuplefetchall(cursor)
+    return render(request, 'studentInfo.html', {'studentInfos': studentInfo})
+
 def courseEnrollment(request):
     cursor = connection.cursor()
     cursor.execute('''select cno, group_concat(name) as instructor,enroll,capacity 
@@ -48,3 +54,9 @@ def courseEnrollment(request):
                     group by cno;''')
     courseEnrollment=namedtuplefetchall(cursor)
     return render(request, 'courseEnrollment.html', {'course_enrollment': courseEnrollment})
+
+def maxCreditCourse(request):
+    cursor = connection.cursor()
+    cursor.execute('''select * from course where credit = (select max(credit) from course);''')
+    maxCreditCourse=namedtuplefetchall(cursor)
+    return render(request, 'maxCreditCourse.html', {'maxCreditCourses': maxCreditCourse})

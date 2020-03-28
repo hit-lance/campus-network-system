@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>student Information</title>
+</head>
+
+
+<body>
+    <table style="word-break: keep-all" border="1">
+        <caption><b>student Information</b></caption>
+        <thead>
+            <tr>
+                <th>stud_id</th>
+                <th>name</th>
+                <th>sex</th>
+                <th>email</th>
+                <th>dept</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for studentInfo in studentInfos %}
+            <tr>
+                <td>{{studentInfo.stud_id}}</td>
+                <td>{{studentInfo.name}}</td>
+                <td>{{studentInfo.sex}}</td>
+                <td>{{studentInfo.email}}</td>
+                <td>{{studentInfo.dept}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</body>
