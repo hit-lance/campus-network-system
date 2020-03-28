@@ -127,3 +127,8 @@ create table reply (
 create view log_list as select author_id,title,post_time from log;
 create view student_info as select stud_id,name,sex,email,dept from student;
 create view enrollment as (select cno,count(cno) as enroll,capacity from student_grade natural join course natural join classroom group by cno);
+
+select name from instructor_arrangement natural join instructor where cno='CS31001';
+select cno, group_concat(name) as instructor,enroll,capacity from instructor_arrangement natural join instructor natural join enrollment group by cno;
+insert into department (name,building,telephone) values ('AS','main building','86403166');
+delete from department where name='AS';

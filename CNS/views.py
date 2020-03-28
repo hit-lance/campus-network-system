@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import User
+from .models import *
 from django.db import connection
 from collections import namedtuple
 
@@ -11,22 +11,35 @@ def namedtuplefetchall(cursor):
     return [nt_result(*row) for row in cursor.fetchall()]
 
 # Create your views here.
-def user(request):
-    return render(request, 'user.html')
+def index(request):
+    return render(request, 'index.html')
 
+def department(request):
+    cursor = connection.cursor()
+    cursor.execute('''select * from department;''')
+    department=namedtuplefetchall(cursor)
+    return render(request, 'department.html', {'departments': department})
 
-def add(request):
-    name = request.POST.get('username')
-    password = request.POST.get('passwd')
-    user = User()
-    user.username = name
-    user.passwd = password
-    user.save()
+def addDepartment(request):
+    return render(request, 'addDepartment.html')
+
+def addSuccess(request):
+    name = request.POST.get('name')
+    building = request.POST.get('building')
+    telephone = request.POST.get('telephone')
+    cursor = connection.cursor()
+    cursor.execute('''insert into department (name,building,telephone) 
+                     values (%s,%s,%s);''',[name,building,telephone])
     return HttpResponse('添加成功！')
 
-def getAllUser(request):
-    userList = User.objects.all()
-    return render(request, 'userList.html',{'users':userList})
+def deleteDepartment(request):
+    return render(request, 'deleteDepartment.html')
+
+def deleteSuccess(request):
+    name = request.POST.get('name')
+    cursor = connection.cursor()
+    cursor.execute('''delete from department where name=%s;''',[name])
+    return HttpResponse('删除成功！')
 
 def courseEnrollment(request):
     cursor = connection.cursor()

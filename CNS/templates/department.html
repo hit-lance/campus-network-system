@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Department</title>
+</head>
+
+
+<body>
+    <table style="width: 400px" border="1">
+        <caption><b>Department</b></caption>
+        <thead>
+            <tr>
+                <th>name</th>
+                <th>building</th>
+                <th>telephone</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for department in departments %}
+            <tr>
+                <td>{{department.name}}</td>
+                <td>{{department.building}}</td>
+                <td>{{department.telephone}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</body>

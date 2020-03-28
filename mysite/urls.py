@@ -18,9 +18,12 @@ from django.conf.urls import url
 from CNS import views
 
 urlpatterns = [
-    url(r'^$', views.user),
-    url(r'^add/$', views.add),
-    url(r'^getAllUser/$', views.getAllUser),
+    url(r'^$', views.index),
+    url(r'^department/$', views.department),
+    url(r'^addDepartment/$', views.addDepartment),
+    url(r'^addSuccess/$', views.addSuccess),
+    url(r'^deleteDepartment/$', views.deleteDepartment),
+    url(r'^deleteSuccess/$', views.deleteSuccess),
     url(r'^courseEnrollment/$', views.courseEnrollment),
     url(r'^admin/', admin.site.urls),
 ]
