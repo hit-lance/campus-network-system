@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Course Enrollment</title>
+</head>
+
+
+<body>
+    <table style="width: 400px" border="1">
+        <caption><b>Course Enrollment</b></caption>
+        <thead>
+            <tr>
+                <th>course#</th>
+                <th>instructors</th>
+                <th>enrollment</th>
+                <th>capacity</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for course in course_enrollment %}
+            <tr>
+                <td>{{course.cno}}</td>
+                <td>{{course.instructor}}</td>
+                <td>{{course.enroll}}</td>
+                <td>{{course.capacity}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</body>

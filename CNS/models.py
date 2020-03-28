@@ -19,27 +19,22 @@ from django.db import models
 
 
 class Classroom(models.Model):
-    building = models.CharField(max_length=20)
-    room_number = models.CharField(max_length=4)
+    room_number = models.CharField(primary_key="room_number", max_length=4)
     capacity = models.SmallIntegerField()
 
     class Meta:
         db_table = 'classroom'
-        unique_together = (('building', 'room_number'),)
 
 
 class Course(models.Model):
-    cno = models.CharField( max_length=7)
-    semester = models.CharField(max_length=5)
+    cno = models.CharField(primary_key="cno", max_length=7)
     title = models.CharField(max_length=20, blank=True, null=True)
     credit = models.IntegerField()
     dept = models.ForeignKey('Department', models.DO_NOTHING, db_column='dept')
-    building = models.ForeignKey(Classroom, models.DO_NOTHING, db_column='building', related_name="courses_building")
     room_number = models.ForeignKey(Classroom, models.DO_NOTHING, db_column='room_number', related_name="courses_room_number")
 
     class Meta:
         db_table = 'course'
-        unique_together = (('cno', 'semester'),)
 
 
 class Department(models.Model):
@@ -51,9 +46,14 @@ class Department(models.Model):
         db_table = 'department'
 
 
+class User(models.Model):
+    username = models.CharField(max_length=20)
+    passwd = models.CharField(max_length=16)
+
+
 class Friendship(models.Model):
-    user = models.OneToOneField('Student', models.DO_NOTHING, related_name="user")
-    friend = models.ForeignKey('Student', models.DO_NOTHING)
+    user = models.ForeignKey('Student', models.DO_NOTHING, related_name="user")
+    friend = models.ForeignKey('Student', models.DO_NOTHING, related_name="friend")
     class_field = models.CharField(db_column='class', max_length=20)  # Field renamed because it was a Python reserved word.
 
     class Meta:
@@ -74,13 +74,12 @@ class Instructor(models.Model):
 
 
 class InstructorArrangement(models.Model):
-    inst = models.OneToOneField(Instructor, models.DO_NOTHING)
+    inst = models.ForeignKey(Instructor, models.DO_NOTHING, db_column='inst_id')
     cno = models.ForeignKey(Course, models.DO_NOTHING, db_column='cno')
-    semester = models.ForeignKey(Course, models.DO_NOTHING, db_column='semester', related_name="inst_semester")
 
     class Meta:
         db_table = 'instructor_arrangement'
-        unique_together = (('inst', 'cno', 'semester'),)
+        unique_together = (('inst', 'cno'),)
 
 
 class Log(models.Model):
@@ -97,7 +96,7 @@ class Log(models.Model):
 
 class Project(models.Model):
     number = models.CharField(primary_key=True, max_length=6)
-    title = models.CharField(max_length=20)
+    title = models.CharField(max_length=200)
     start_time = models.DateField()
     end_time = models.DateField()
 
@@ -117,8 +116,8 @@ class Reply(models.Model):
 
 
 class Research(models.Model):
-    inst = models.OneToOneField(Instructor, models.DO_NOTHING)
-    proj_number = models.ForeignKey(Project, models.DO_NOTHING, db_column='proj_number')
+    inst = models.ForeignKey(Instructor, models.DO_NOTHING, db_column='inst_id')
+    proj_number = models.ForeignKey(Project, models.DO_NOTHING, db_column='proj_number',related_name="proj_number")
     role = models.CharField(max_length=10)
 
     class Meta:
@@ -151,11 +150,10 @@ class StudentFamily(models.Model):
 
 
 class StudentGrade(models.Model):
-    stud = models.OneToOneField(Student, models.DO_NOTHING)
+    stud = models.ForeignKey(Student, models.DO_NOTHING, db_column='stud_id')
     cno = models.ForeignKey(Course, models.DO_NOTHING, db_column='cno', related_name="inst_cno")
-    semester = models.ForeignKey(Course, models.DO_NOTHING, db_column='semester')
     grade = models.IntegerField(blank=True, null=True)
 
     class Meta:
         db_table = 'student_grade'
-        unique_together = (('stud', 'cno', 'semester'),)
+        unique_together = (('stud', 'cno'),)

@@ -1,6 +1,6 @@
-create database CNS;
+create database cns_test;
 
-use CNS;
+use cns_test;
 
 create table department(
     name CHAR(2) NOT NULL,
@@ -43,32 +43,28 @@ create table student_family(
 );
 
 create table classroom(
-    building VARCHAR(20) NOT NULL,
     room_number VARCHAR(4) NOT NULL,
     capacity SMALLINT NOT NULL CHECK(capacity>0),
-    PRIMARY KEY (building, room_number)
+    PRIMARY KEY (room_number)
 );
 
 create table course(
     cno CHAR(7),
-    semester CHAR(5),
     title VARCHAR(20),
     credit TINYINT NOT NULL CHECK(credit>0),
     dept CHAR(2) NOT NULL,
-    building VARCHAR(20) NOT NULL,
     room_number VARCHAR(4) NOT NULL,
-    PRIMARY KEY (cno, semester),
+    PRIMARY KEY (cno),
     FOREIGN KEY (dept) REFERENCES department(name),
-    FOREIGN KEY (building, room_number) REFERENCES classroom(building, room_number)
+    FOREIGN KEY (room_number) REFERENCES classroom(room_number)
 );
 
 create table instructor_arrangement(
     inst_id CHAR(6),
     cno CHAR(7),
-    semester CHAR(5),
-    PRIMARY KEY (inst_id, cno, semester),
+    PRIMARY KEY (inst_id, cno),
     FOREIGN KEY (inst_id) REFERENCES instructor(inst_id),
-    FOREIGN KEY (cno, semester) REFERENCES course(cno, semester)
+    FOREIGN KEY (cno) REFERENCES course(cno)
 );
 
 create table student_grade(
@@ -128,3 +124,6 @@ create table reply (
     FOREIGN KEY (log_id) REFERENCES log(log_id)    
 );
 
+create view log_list as select author_id,title,post_time from log;
+create view student_info as select stud_id,name,sex,email,dept from student;
+create view enrollment as (select cno,count(cno) as enroll,capacity from student_grade natural join course natural join classroom group by cno);
