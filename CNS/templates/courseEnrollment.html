@@ -10,12 +10,80 @@
 
 <body>
     <table style="word-break: keep-all" border="1">
+        <caption><b>Instructor</b></caption>
+        <thead>
+            <tr>
+                <th>inst_id</th>
+                <th>name</th>
+                <th>sex</th>
+                <th>email</th>
+                <th>title</th>
+                <th>dept</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for instructor in instructors %}
+            <tr>
+                <td>{{instructor.inst_id}}</td>
+                <td>{{instructor.name}}</td>
+                <td>{{instructor.sex}}</td>
+                <td>{{instructor.email}}</td>
+                <td>{{instructor.title}}</td>
+                <td>{{instructor.dept}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <table style="word-break: keep-all" border="1">
+        <caption><b>Instructor Arrangement</b></caption>
+        <thead>
+            <tr>
+                <th>cno</th>
+                <th>instructor id</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for instructorArrangement in instructorArrangements %}
+            <tr>
+                <td>{{instructorArrangement.cno}}</td>
+                <td>{{instructorArrangement.inst_id}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <table style="word-break: keep-all" border="1">
+        <caption><b>Enrollment(view)</b></caption>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>name</th>
+                <th>enroll</th>
+                <th>capacity</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for enrollment in enrollments %}
+            <tr>
+                <td>{{enrollment.cno}}</td>
+                <td>{{enrollment.cname}}</td>
+                <td>{{enrollment.enroll}}</td>
+                <td>{{enrollment.capacity}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+    <table style="word-break: keep-all" border="1">
         <caption><b>Course Enrollment</b></caption>
         <thead>
             <tr>
-                <th>course#</th>
+                <th>#</th>
+                <th>name</th>
                 <th>instructors</th>
-                <th>enrollment</th>
+                <th>enroll</th>
                 <th>capacity</th>
             </tr>
         </thead>
@@ -23,6 +91,7 @@
         {% for course in course_enrollment %}
             <tr>
                 <td>{{course.cno}}</td>
+                <td>{{course.cname}}</td>
                 <td>{{course.instructor}}</td>
                 <td>{{course.enroll}}</td>
                 <td>{{course.capacity}}</td>

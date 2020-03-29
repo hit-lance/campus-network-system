@@ -50,7 +50,7 @@ create table classroom(
 
 create table course(
     cno CHAR(7),
-    title VARCHAR(20),
+    cname VARCHAR(20),
     credit TINYINT NOT NULL CHECK(credit>0),
     dept CHAR(2) NOT NULL,
     room_number VARCHAR(4) NOT NULL,
@@ -126,11 +126,34 @@ create table reply (
 
 create view log_list as select author_id,title,post_time from log;
 create view student_info as select stud_id,name,sex,email,dept from student;
-create view enrollment as (select cno,count(cno) as enroll,capacity from student_grade natural join course natural join classroom group by cno);
+create view enrollment as (select cno,title,count(cno) as enroll,capacity from student_grade natural join course natural join classroom group by cno);
 
 select name from instructor_arrangement natural join instructor where cno='CS31001';
-select cno, group_concat(name) as instructor,enroll,capacity from instructor_arrangement natural join instructor natural join enrollment group by cno;
+select cno,cname,group_concat(name) as instructor,enroll,capacity from instructor_arrangement natural join instructor natural join enrollment group by cno;
 insert into department (name,building,telephone) values ('AS','main building','86403166');
 delete from department where name='AS';
 select * from student_info;
 select * from course where credit = (select max(credit) from course);
+
+
+CREATE TABLE department_history (
+  name CHAR(2) NOT NULL,
+  operatetype varchar(50) NOT NULL,
+  operatetime datetime NOT NULL,
+  PRIMARY KEY (name)
+);
+
+
+DELIMITER ;;
+CREATE TRIGGER tri_insert_department AFTER INSERT ON department FOR EACH ROW begin
+    INSERT INTO department_history(name, operatetype, operatetime) VALUES (new.name, 'add a department',  now());
+end
+;;
+DELIMITER ;
+
+DELIMITER ;;
+CREATE TRIGGER tri_delete_department AFTER DELETE ON department FOR EACH ROW begin
+    INSERT INTO department_history(name, operatetype, operatetime) VALUES (old.name, 'delete a department', now());
+end
+;;
+DELIMITER ;

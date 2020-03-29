@@ -9,12 +9,36 @@
 
 
 <body>
+<table style="word-break: keep-all" border="1">
+        <caption><b>Course</b></caption>
+        <thead>
+            <tr>
+                <th>course#</th>
+                <th>name</th>
+                <th>credit</th>
+                <th>dept</th>
+                <th>room_number</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for course in courses %}
+            <tr>
+                <td>{{course.cno}}</td>
+                <td>{{course.cname}}</td>
+                <td>{{course.credit}}</td>
+                <td>{{course.dept}}</td>
+                <td>{{course.room_number}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
     <table style="word-break: keep-all" border="1">
         <caption><b>Maximum Credit Course</b></caption>
         <thead>
             <tr>
                 <th>course#</th>
-                <th>title</th>
+                <th>name</th>
                 <th>credit</th>
                 <th>department</th>
                 <th>classroom#</th>
@@ -24,7 +48,7 @@
         {% for maxCreditCourse in maxCreditCourses %}
             <tr>
                 <td>{{maxCreditCourse.cno}}</td>
-                <td>{{maxCreditCourse.title}}</td>
+                <td>{{maxCreditCourse.cname}}</td>
                 <td>{{maxCreditCourse.credit}}</td>
                 <td>{{maxCreditCourse.dept}}</td>
                 <td>{{maxCreditCourse.room_number}}</td>

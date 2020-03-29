@@ -10,7 +10,35 @@
 
 <body>
     <table style="word-break: keep-all" border="1">
-        <caption><b>student Information</b></caption>
+        <caption><b>Student</b></caption>
+        <thead>
+            <tr>
+                <th>stud_id</th>
+                <th>name</th>
+                <th>sex</th>
+                <th>email</th>
+                <th>password</th>
+                <th>grade</th>
+                <th>dept</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for student in students %}
+            <tr>
+                <td>{{student.stud_id}}</td>
+                <td>{{student.name}}</td>
+                <td>{{student.sex}}</td>
+                <td>{{student.email}}</td>
+                <td>{{student.password}}</td>
+                <td>{{student.grade}}</td>
+                <td>{{student.dept}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <table style="word-break: keep-all" border="1">
+        <caption><b>student Information(view)</b></caption>
         <thead>
             <tr>
                 <th>stud_id</th>

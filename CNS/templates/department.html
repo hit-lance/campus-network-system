@@ -28,4 +28,40 @@
         {% endfor %}
         </tbody>
     </table>
+
+    <h2>Add Department</h2>
+    <form method="POST" action="../addDepartment/">
+        {% csrf_token %}
+        Name：<input type="text" name="name" /><br>
+        Building：<input type="text" name="building" /><br>
+        Telephone：<input type="text" name="telephone" /><br>
+        <button>Add!</button>
+    </form>
+
+    <h2>Delete Department</h2>
+    <form method="POST" action="../deleteDepartment/">
+        {% csrf_token %}
+        Name：<input type="text" name="name" /><br>
+        <button>Delete!</button>
+    </form>
+
+<table style="word-break: keep-all" border="1">
+        <caption><b>Add/Delete History</b></caption>
+        <thead>
+            <tr>
+                <th>name</th>
+                <th>type</th>
+                <th>time</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for history in historys %}
+            <tr>
+                <td>{{history.name}}</td>
+                <td>{{history.operatetype}}</td>
+                <td>{{history.operatetime}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </body>

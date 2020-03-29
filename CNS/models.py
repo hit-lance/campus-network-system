@@ -28,7 +28,7 @@ class Classroom(models.Model):
 
 class Course(models.Model):
     cno = models.CharField(primary_key="cno", max_length=7)
-    title = models.CharField(max_length=20, blank=True, null=True)
+    cname = models.CharField(max_length=100, blank=True, null=True)
     credit = models.IntegerField()
     dept = models.ForeignKey('Department', models.DO_NOTHING, db_column='dept')
     room_number = models.ForeignKey(Classroom, models.DO_NOTHING, db_column='room_number', related_name="courses_room_number")
@@ -44,11 +44,6 @@ class Department(models.Model):
 
     class Meta:
         db_table = 'department'
-
-
-class User(models.Model):
-    username = models.CharField(max_length=20)
-    passwd = models.CharField(max_length=16)
 
 
 class Friendship(models.Model):
