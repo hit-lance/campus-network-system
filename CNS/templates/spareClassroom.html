@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Spare Classroom</title>
+</head>
+
+
+<body>
+<table style="word-break: keep-all" border="1">
+    <caption><b>Classroom</b></caption>
+    <thead>
+        <tr>
+            <th>course#</th>
+            <th>name</th>
+            <th>credit</th>
+            <th>dept</th>
+            <th>room_number</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for course in courses %}
+        <tr>
+            <td>{{course.cno}}</td>
+            <td>{{course.cname}}</td>
+            <td>{{course.credit}}</td>
+            <td>{{course.dept}}</td>
+            <td>{{course.room_number}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<table style="word-break: keep-all" border="1">
+    <caption><b>Course</b></caption>
+    <thead>
+        <tr>
+            <th>room number</th>
+            <th>capacity</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for classroom in classrooms %}
+        <tr>
+            <td>{{classroom.room_number}}</td>
+            <td>{{classroom.capacity}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<table style="word-break: keep-all" border="1">
+    <caption><b>Spare Classroom</b></caption>
+    <thead>
+        <tr>
+            <th>room number</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for spareClassroom in spareClassrooms %}
+        <tr>
+            <td>{{spareClassroom.room_number}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>

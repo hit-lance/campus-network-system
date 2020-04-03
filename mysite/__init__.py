@@ -1,5 +1,4 @@
 import MySQLdb
-# pymysql.install_as_MySQLdb()
 
 # 打开数据库连接
 db = MySQLdb.connect('localhost', 'root', '123456', 'cns')

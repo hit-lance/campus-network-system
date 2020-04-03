@@ -14,6 +14,7 @@ def namedtuplefetchall(cursor):
 def index(request):
     return render(request, 'index.html')
 
+@transaction.atomic
 def department(request):
     with transaction.atomic():
         try:
@@ -29,6 +30,7 @@ def department(request):
         transaction.savepoint_commit(save_id)
     return render(request, 'department.html', {'departments': department, 'historys': departmentHistory})
 
+@transaction.atomic
 def addDepartment(request):
     with transaction.atomic():
         try:
@@ -45,6 +47,7 @@ def addDepartment(request):
         transaction.savepoint_commit(save_id)
     return HttpResponse('Success！')
 
+@transaction.atomic
 def deleteDepartment(request):
     with transaction.atomic():
         try:
@@ -52,12 +55,15 @@ def deleteDepartment(request):
             name = request.POST.get('name')
             cursor = connection.cursor()
             cursor.execute('''delete from department where name=%s;''',[name])
+            if cursor.rowcount==0:
+                raise RuntimeError()
         except Exception as e:
             transaction.savepoint_rollback(save_id)
             return HttpResponse('Oops, an error has occurred!')
+        transaction.savepoint_commit(save_id)
     return HttpResponse('Success！')
 
-
+@transaction.atomic
 def studentInfo(request):
     with transaction.atomic():
         try:
@@ -70,8 +76,10 @@ def studentInfo(request):
         except Exception as e:
             transaction.savepoint_rollback(save_id)
             return HttpResponse('Oops, an error has occurred!')
+        transaction.savepoint_commit(save_id)
     return render(request, 'studentInfo.html', {'students': student, 'studentInfos': studentInfo})
 
+@transaction.atomic
 def courseEnrollment(request):
     with transaction.atomic():
         try:
@@ -90,12 +98,14 @@ def courseEnrollment(request):
         except Exception as e:
             transaction.savepoint_rollback(save_id)
             return HttpResponse('Oops, an error has occurred!')
+        transaction.savepoint_commit(save_id)
     return render(request, 'courseEnrollment.html',
                   {'instructors':instructor,
                    'instructorArrangements':instructorArrangement,
                    'enrollments':enrollment,
                    'course_enrollment': courseEnrollment})
 
+@transaction.atomic
 def maxCreditCourse(request):
     with transaction.atomic():
         try:
@@ -107,4 +117,27 @@ def maxCreditCourse(request):
             maxCreditCourse=namedtuplefetchall(cursor)
         except Exception as e:
             transaction.savepoint_rollback(save_id)
+        transaction.savepoint_commit(save_id)
     return render(request, 'maxCreditCourse.html', {'courses': course, 'maxCreditCourses': maxCreditCourse})
+
+@transaction.atomic
+def spareClassroom(request):
+    with transaction.atomic():
+        try:
+            save_id = transaction.savepoint()
+            cursor = connection.cursor()
+            cursor.execute('''select * from course;''')
+            course=namedtuplefetchall(cursor)
+            cursor.execute('''select * from classroom;''')
+            classroom=namedtuplefetchall(cursor)
+            cursor.execute('''select b.room_number from course a 
+            right outer join classroom b on a.room_number=b.room_number 
+            group by room_number having count(cno)=0;''')
+            spareClassroom=namedtuplefetchall(cursor)
+        except Exception as e:
+            transaction.savepoint_rollback(save_id)
+        transaction.savepoint_commit(save_id)
+    return render(request, 'spareClassroom.html',
+                  {'courses':course,
+                   'classrooms':classroom,
+                   'spareClassrooms':spareClassroom})

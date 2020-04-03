@@ -1,9 +1,9 @@
 create database cns_test;
 
-use cns_test;
+use cns;
 
 create table department(
-    name CHAR(2) NOT NULL,
+    name CHAR(2) NOT NULL check(name!=''),
     building VARCHAR(20) NOT NULL,
     telephone CHAR(8) NOT NULL,
     PRIMARY KEY (name)
@@ -68,13 +68,14 @@ create table instructor_arrangement(
 );
 
 create table student_grade(
+    id int NOT NULL AUTO_INCREMENT,
     stud_id CHAR(10),
     cno CHAR(7),
-    semester CHAR(5),
     grade TINYINT CHECK(grade=0 AND grade<=100),
-    PRIMARY KEY (stud_id, cno, semester),
+    PRIMARY KEY (id),
+    UNIQUE KEY 'student_grade_stud_id_cno_38c1cf66_uniq' (stud_id,cno)
     FOREIGN KEY (stud_id) REFERENCES student(stud_id),
-    FOREIGN KEY (cno, semester) REFERENCES course(cno, semester)
+    FOREIGN KEY (cno) REFERENCES course(cno)
 );
 
 create table project (
@@ -95,6 +96,7 @@ create table research (
 );
 
 create table friendship (
+
     user_id CHAR(10),
     friend_id CHAR(10),
     class VARCHAR(20) NOT NULL,
@@ -124,23 +126,16 @@ create table reply (
     FOREIGN KEY (log_id) REFERENCES log(log_id)    
 );
 
-create view log_list as select author_id,title,post_time from log;
+
 create view student_info as select stud_id,name,sex,email,dept from student;
-create view enrollment as (select cno,title,count(cno) as enroll,capacity from student_grade natural join course natural join classroom group by cno);
+create view enrollment as (select cno,cname,count(cno) as enroll,capacity from student_grade natural join course natural join classroom group by cno);
 
-select name from instructor_arrangement natural join instructor where cno='CS31001';
-select cno,cname,group_concat(name) as instructor,enroll,capacity from instructor_arrangement natural join instructor natural join enrollment group by cno;
-insert into department (name,building,telephone) values ('AS','main building','86403166');
-delete from department where name='AS';
-select * from student_info;
-select * from course where credit = (select max(credit) from course);
-
-
-CREATE TABLE department_history (
-  name CHAR(2) NOT NULL,
-  operatetype varchar(50) NOT NULL,
-  operatetime datetime NOT NULL,
-  PRIMARY KEY (name)
+create table department_history (
+    id INT AUTO_INCREMENT,
+    name CHAR(2) NOT NULL,
+    operatetype varchar(50) NOT NULL,
+    operatetime datetime NOT NULL,
+    PRIMARY KEY (id)
 );
 
 
@@ -157,3 +152,13 @@ CREATE TRIGGER tri_delete_department AFTER DELETE ON department FOR EACH ROW beg
 end
 ;;
 DELIMITER ;
+
+select name from instructor_arrangement natural join instructor where cno='CS31001';
+select cno,cname,group_concat(name) as instructor,enroll,capacity from instructor_arrangement natural join instructor natural join enrollment group by cno;
+insert into department (name,building,telephone) values ('AS','main building','86403166');
+delete from department where name='AS';
+select * from student_info;
+select * from course where credit = (select max(credit) from course);
+select b.room_number from course a right outer join classroom b on a.room_number=b.room_number group by room_number having count(cno)=0;
+
+
